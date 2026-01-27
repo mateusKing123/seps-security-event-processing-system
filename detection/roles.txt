@@ -1,0 +1,4 @@
+Se o mesmo IP tentar muitos usernames → alerta
+Se IP normalmente faz 1 req/min e agora faz 100 -> alerta
+Se um IP acessar o mesmo endpoint > 100x em 1 min -> alerta
+se um IP tiver > 10 login_falied em 60s -> alerta

@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+seps.db
+.venv/
+.env
+old/
+
