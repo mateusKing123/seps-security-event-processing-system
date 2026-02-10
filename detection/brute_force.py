@@ -3,36 +3,35 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timezone, timedelta
 
 from models import Event
+from services.alert_service import create_alert_from_detection
 
 def detect_brute_force(
     db: Session,
     *,
-    max_attempts: int=10,
+    threshold: int=10,
     window_seconds: int=60
-    )-> list[dict]:
+    )-> None:
 
-    window_start = datetime.now(timezone.utc) - timedelta(seconds=window_seconds)
+    time_limite = datetime.now(timezone.utc) - timedelta(seconds=window_seconds)
 
     results = (
         db.query(
             Event.ip,
-            func.count(Event.id).label("attempts")
+            func.count(Event.id).label("attempt_count")
         )
         .filter(Event.event_type == "login_failed")
-        .filter(Event.timestamp >= window_start)
+        .filter(Event.timestamp >= time_limite)
         .group_by(Event.ip)
-        .having(func.count(Event.id) >= max_attempts)
+        .having(func.count(Event.id) >= threshold)
         .all()
     )
 
-    detections = []
-
-    for ip, attempts in results:
-        detections.append({
-            "ip": ip,
-            "attempts": attempts,
-            "window_seconds": window_seconds,
-            "detected_at": datetime.now(timezone.utc)
-        })
-
-    return detections
+    for ip, attempt_count in results:
+        create_alert_from_detection(
+            db,
+            alert_type="brute_force",
+            ip=ip,
+            count=attempt_count,
+            window_seconds=window_seconds,
+            risk_increment=15
+        )
