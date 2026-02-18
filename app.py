@@ -4,7 +4,7 @@ from services.event_service import create_event
 from models import Alert
 
 
-app = Flask("__name__")
+app = Flask(__name__)
 
 @app.before_request
 def open_db_session():

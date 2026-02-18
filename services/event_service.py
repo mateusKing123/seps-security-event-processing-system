@@ -1,9 +1,11 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from models import Event
 
 
 def create_event(db, event_data: dict) -> Event:
     timestamp = datetime.fromisoformat(event_data["timestamp"])
+    if timestamp.tzinfo is None:
+        timestamp = timestamp.replace(tzinfo=timezone.utc)
 
     event = Event(
         timestamp = timestamp,

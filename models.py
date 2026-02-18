@@ -6,7 +6,7 @@ class Event(Base):
     __tablename__ = "events"
 
     id = Column(Integer, primary_key=True)
-    timestamp = Column(DateTime, nullable=False)
+    timestamp = Column(DateTime(timezone=True), nullable=False)
     ip = Column(String, nullable=False, index=True)
     event_type = Column(String, nullable=False, index=True)
     username = Column(String, nullable=True)

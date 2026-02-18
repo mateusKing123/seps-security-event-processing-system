@@ -2,7 +2,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 from datetime import datetime, timezone, timedelta
 
-from models import Event
+from models import Event, Alert
 from services.alert_service import create_alert_from_detection
 
 def detect_brute_force(
@@ -27,6 +27,19 @@ def detect_brute_force(
     )
 
     for ip, attempt_count in results:
+        existing_alert = (
+            db.query(Alert)
+            .filter(
+                Alert.alert_type == "brute_force",
+                Alert.ip == ip,
+                Alert.created_at >= time_limite
+            )
+            .first()
+        )
+        
+        if existing_alert:
+            continue
+
         create_alert_from_detection(
             db,
             alert_type="brute_force",
