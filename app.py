@@ -2,6 +2,7 @@ from flask import Flask, request, g, jsonify
 from db import SessionLocal
 from services.event_service import create_event
 from models import Alert
+from detection.brute_force import detect_brute_force
 
 
 app = Flask(__name__)
@@ -12,7 +13,7 @@ def open_db_session():
 
 
 @app.teardown_request
-def close_deb_session(exception=None):
+def close_db_session(exception=None):
     db = g.pop("db", None)
 
     if db is not None:
@@ -21,7 +22,7 @@ def close_deb_session(exception=None):
 
 @app.route("/events", methods=["POST"])
 def ingest_event():
-    data = request.get_json()
+    data = request.get_json() or {}
 
     required_fields = ["timestamp", "ip", "event_type", "endpoint"]
     for field in required_fields:
@@ -55,6 +56,18 @@ def list_alerts():
         }
         for alert in alerts
     ])
+
+@app.route("/detect/bruteforce", methods=["POST"])
+def run_bruteforce_detection():
+    detect_brute_force(
+        g.db,
+        threshold=10,
+        window_seconds=60
+    )
+
+    return jsonify({
+        "message" : "Brute force detection executed"
+    })
 
 
 if __name__ == "__main__":
