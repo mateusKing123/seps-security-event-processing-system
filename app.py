@@ -1,7 +1,7 @@
 from flask import Flask, request, g, jsonify
 from db import SessionLocal
 from services.event_service import create_event
-from models import Alert
+from models import Alert, IPReputation
 from detection.brute_force import detect_brute_force
 
 
@@ -67,6 +67,24 @@ def run_bruteforce_detection():
 
     return jsonify({
         "message" : "Brute force detection executed"
+    })
+
+@app.route("/reputation/<ip>", methods=["GET"])
+def get_ip_reputation(ip):
+
+    reputation = g.db.get(IPReputation, ip)
+
+    if reputation is None:
+        return jsonify({
+            "ip": ip,
+            "risk_score": 0,
+            "message": "No reputation yet"
+        })
+
+    return jsonify({
+        "ip": reputation.ip,
+        "risk_score": reputation.risk_score,
+        "last_seen": reputation.last_seen.isoformat()
     })
 
 
