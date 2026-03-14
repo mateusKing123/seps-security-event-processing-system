@@ -19,6 +19,7 @@ class Alert(Base):
     id = Column(Integer, primary_key=True, index=True)
     alert_type = Column(String, nullable=False, index=True)
     ip = Column(String, nullable=False, index=True)
+    severity = Column(String, nullable=False, default="medium")
     count = Column(Integer, nullable=False)
     window_seconds = Column(Integer, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

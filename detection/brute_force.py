@@ -46,5 +46,6 @@ def detect_brute_force(
             ip=ip,
             count=attempt_count,
             window_seconds=window_seconds,
-            risk_increment=15
+            risk_increment=15,
+            severity="high"
         )

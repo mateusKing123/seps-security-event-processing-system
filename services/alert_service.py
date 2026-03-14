@@ -10,14 +10,16 @@ def create_alert_from_detection(
         ip: str,
         count: int,
         window_seconds: int,
-        risk_increment: int = 10
+        risk_increment: int = 10,
+        severity: str = "medium"
 ) -> Alert:
     alert = Alert(
         alert_type = alert_type,
         ip = ip,
         count = count,
         window_seconds = window_seconds,
-        created_at = datetime.now(timezone.utc)
+        created_at = datetime.now(timezone.utc),
+        severity = severity
     )
 
     db.add(alert)

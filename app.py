@@ -50,6 +50,7 @@ def list_alerts():
             "id": alert.id,
             "ip": alert.ip,
             "type": alert.alert_type,
+            "severity": alert.severity,
             "count": alert.count,
             "window_seconds": alert.window_seconds,
             "created_at": alert.created_at.isoformat()
