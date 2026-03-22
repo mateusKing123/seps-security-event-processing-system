@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 URL = "http://127.0.0.1:5000/events"
 
-IP = "10.0.0.61"
+IP = "8.8.8.8"
 TOTAL_EVENTS = 20
 
 for i in range(TOTAL_EVENTS):

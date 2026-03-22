@@ -32,6 +32,8 @@ def ingest_event():
 
     event = create_event(g.db, data)
 
+    detect_brute_force(db=g.db, threshold=10, window_seconds=60)
+
     return jsonify({
         "id": event.id,
         "message": "Event stored successfully"
