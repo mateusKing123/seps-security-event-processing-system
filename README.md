@@ -10,3 +10,12 @@ Experimental security system inspired by SIEM/WAF architectures.
 
 ## Goal
 Hands-on study project focused on security engineering and system design.
+
+```bash
+git clone <repo>
+cd seps
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python create_db.py
+python app.py

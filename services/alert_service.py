@@ -18,7 +18,7 @@ def create_alert_from_detection(
         ip = ip,
         count = count,
         window_seconds = window_seconds,
-        created_at = datetime.now(timezone.utc),
+        created_at = datetime.utcnow(),
         severity = severity
     )
 
@@ -30,12 +30,12 @@ def create_alert_from_detection(
         reputation = IPReputation(
             ip=ip,
             risk_score = risk_increment,
-            last_seen = datetime.now(timezone.utc)
+            last_seen = datetime.utcnow()
         )
         db.add(reputation)
     else:
         reputation.risk_score += risk_increment
-        reputation.last_seen = datetime.now(timezone.utc)
+        reputation.last_seen = datetime.utcnow()
 
     db.commit()
     db.refresh(alert)

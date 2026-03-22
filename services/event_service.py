@@ -3,7 +3,7 @@ from models import Event
 
 
 def create_event(db, event_data: dict) -> Event:
-    timestamp = datetime.fromisoformat(event_data["timestamp"]).replace(tzinfo=timezone.utc)
+    timestamp = datetime.fromisoformat(event_data["timestamp"])
     if timestamp.tzinfo is None:
         timestamp = timestamp.replace(tzinfo=timezone.utc)
 

@@ -1,8 +1,9 @@
 from flask import Flask, request, g, jsonify
 from db import SessionLocal
 from services.event_service import create_event
-from models import Alert, IPReputation
+from models import Alert, IPReputation, Event
 from detection.brute_force import detect_brute_force
+from sqlalchemy import func
 
 
 app = Flask(__name__)
@@ -86,6 +87,18 @@ def get_ip_reputation(ip):
         "ip": reputation.ip,
         "risk_score": reputation.risk_score,
         "last_seen": reputation.last_seen.isoformat()
+    })
+
+@app.route("/stats", methods=["GET"])
+def get_stats():
+    events_total = g.db.query(func.count(Event.id)).scalar()
+    alerts_total = g.db.query(func.count(Alert.id)).scalar()
+    ips_flagged = g.db.query(func.count(IPReputation.ip)).scalar()
+
+    return jsonify({
+        "events_total": events_total,
+        "alerts_total": alerts_total,
+        "ips_flagged": ips_flagged
     })
 
 

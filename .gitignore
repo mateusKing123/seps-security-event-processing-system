@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 seps.db
 .venv/
+venv/
 .env
 old/
 

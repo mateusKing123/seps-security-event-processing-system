@@ -12,7 +12,7 @@ def detect_brute_force(
     window_seconds: int=60
     )-> None:
 
-    time_limite = datetime.now(timezone.utc) - timedelta(seconds=window_seconds)
+    time_limite = datetime.utcnow() - timedelta(seconds=window_seconds)
 
     results = (
         db.query(

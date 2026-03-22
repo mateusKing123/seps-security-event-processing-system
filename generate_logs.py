@@ -9,7 +9,7 @@ TOTAL_EVENTS = 20
 
 for i in range(TOTAL_EVENTS):
     event = {
-        "timestamp":datetime.now(timezone.utc).isoformat(),
+        "timestamp":datetime.utcnow().isoformat(),
         "ip":IP,
         "event_type":"login_failed",
         "endpoint":"/login"}
