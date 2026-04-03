@@ -88,6 +88,7 @@ If exceeded:
 ## Reputation System
 
 Reputation score increases based on alert severity:
+
 Severity                        Risk Increment
 ---
 low                             +5
@@ -97,6 +98,7 @@ medium                          +10
 high                            +20
 ---
 critical                        +40
+---
 
 ---
 
